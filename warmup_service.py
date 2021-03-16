@@ -21,6 +21,7 @@ class Warmup:
         self.overrides = {}
         self.factor_overrides = []
         self.schedule = {}
+        self.end_day = -1
 
     def set_current_day(day: int):
         self.current_day = day
@@ -52,7 +53,9 @@ class Warmup:
                     break
                 else:
                     self.schedule[day] = emails
-        assert self.schedule[-1] == target_daily_send_vol
+        if self.end_day == -1:
+            self.end_day = day
+        assert self.schedule[self.end_day] == target_daily_send_vol
     
     def get_schedule():
         return self.schedule
