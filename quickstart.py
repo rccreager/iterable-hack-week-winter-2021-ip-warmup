@@ -36,19 +36,32 @@ def main():
 
     service = build('gmailpostmastertools', 'v1beta1', credentials=creds)
 
-    #object_methods = [method_name for method_name in dir(service)
-    #              if callable(getattr(object, method_name))]
-    #print(f"object_methods: {object_methods}")
+    #for key, value in service.__dict__.items():
+    #    print(f"key: {key}")
+    #    print(f"value: {value}")
 
-    print(service.__dict__)
+    domains_resource = service.domains()
 
-    domains = service.domains().list().execute()
+    domains = domains_resource.list().execute()
     if not domains:
         print('No domains found.')
     else:
         print('Domains:')
         for domain in domains['domains']:
-            print(domain)
+            name = domain["name"]
+            create_time = domain["createTime"]
+            permission = domain["permission"]
+            print(f"    domain.name: {name}")
+            print(f"    domain.createTime: {create_time}") 
+            print(f"    domain.permission: {permission}") 
+
+    try:
+        traffic_stats = domains_resource.trafficStats().list(parent = 'domains/kylemoulder.com').execute()
+        print("Found traffic stats!")
+        print(traffic_stats)
+    except Exception as e:
+        print("No traffic stats found")
+        print(e)
 
 if __name__ == '__main__':
   main()
