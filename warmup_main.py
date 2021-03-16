@@ -1,4 +1,4 @@
-
+import math
 
 def main():
 
@@ -25,7 +25,7 @@ def main():
     campaign_total_sends = daily_send_vol
 
     while (daily_send_vol < target_daily_send_vol):
-        daily_send_vol = daily_send_vol * warmup_factor
+        daily_send_vol = math.floor(daily_send_vol * warmup_factor)
         warmup_schedule.append(daily_send_vol)
         campaign_total_sends = campaign_total_sends + daily_send_vol
         if campaign_total_sends >= number_engaged_users:
